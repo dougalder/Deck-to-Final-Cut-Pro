@@ -1,0 +1,15 @@
+{
+  "name": "deck-to-final-cut-pro",
+  "version": "1.0.0",
+  "description": "Turn PowerPoint, Keynote and Markdown into Final Cut Pro projects, entirely in the browser.",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "test": "node tools/smoke-test.mjs"
+  },
+  "devDependencies": {
+    "@xmldom/xmldom": "^0.8.10",
+    "jszip": "3.10.2"
+  }
+}

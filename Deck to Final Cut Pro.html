@@ -712,7 +712,7 @@ const Core = (() => {
             const r = blip ? R[relAttr(blip, 'embed')] : null;
             if (!r || !r.target) continue;
             const ext = r.target.split('.').pop().toLowerCase();
-            if (['emf', 'wmf', 'svg'].includes(ext)) { warnings.push(`Slide ${i + 1}: skipped a ${ext.toUpperCase()} vector image. Final Cut Pro can't import it; export it as PNG to include it.`); seg.omitted.push(`${ext.toUpperCase()} image`); continue; }
+            if (['emf', 'wmf', 'svg'].includes(ext)) { warnings.push(`Slide ${i + 1}: skipped ${ext === 'wmf' ? 'a' : 'an'} ${ext.toUpperCase()} vector image. Final Cut Pro can't import it; export it as PNG to include it.`); seg.omitted.push(`${ext.toUpperCase()} image`); continue; }
             const x = path(c, 'spPr/xfrm');
             const im = { key: addMedia(r.target), box: x ? toBox(x, tx) : null };
             seg.images.push(im); seg.graphics.push({ kind: 'image', ...im });
@@ -1058,7 +1058,9 @@ const Core = (() => {
 
       const markers = [];
       if (S.notes === 'markers' && seg.notes) markers.push({ value: seg.notes, todo: false });
-      for (const o of seg.omitted) markers.push({ value: /^missing/.test(o) ? `Add ${o.replace(/^missing /, '')}` : `Rebuild ${o} from slide ${seg.number}`, todo: true });
+      const omitted = new Map();
+      for (const o of seg.omitted) omitted.set(o, (omitted.get(o) || 0) + 1);
+      for (const [o, n] of omitted) markers.push({ value: /^missing/.test(o) ? `Add ${o.replace(/^missing /, '')}` : `Rebuild ${n > 1 ? `${n} ${o}s` : o} from slide ${seg.number}`, todo: true });
 
       segs.push({ tag, name: `${tag} ${seg.name}`, offset, dur, overridden: !!ov, key: seg.number, bgReq, bgHex, images, titles, markers, chapter: S.chapters ? seg.section : null, source: seg });
       offset += dur;
@@ -1608,7 +1610,7 @@ function renderWarnings() {
     if (risky.length) w.unshift(`${risky.join(', ')} ${risky.length === 1 ? 'isn\u2019t' : 'aren\u2019t'} on every Mac. If Final Cut Pro can\u2019t find ${risky.length === 1 ? 'it' : 'them'}, that text will show up tiny. Pick replacements under Text, or mark them installed.`);
   }
   const todos = state.plan ? state.plan.segments.reduce((a, s) => a + s.markers.filter(m => m.todo).length, 0) : 0;
-  if (todos) w.unshift(`${todos} item${todos === 1 ? '' : 's'} couldn't come across (charts, tables, SmartArt or missing images). Each has a red to-do marker in the timeline.`);
+  if (todos) w.unshift(`${todos === 1 ? 'A red to-do marker flags' : `${todos} red to-do markers flag`} things that couldn't come across, such as charts, tables, SmartArt, vector images, freeform shapes or missing images.`);
   for (const t of w.slice(0, 8)) { const li = document.createElement('li'); li.textContent = t; ul.append(li); }
 }
 
