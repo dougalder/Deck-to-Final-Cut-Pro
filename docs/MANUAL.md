@@ -40,8 +40,9 @@ There are three ways to run it, and they behave the same:
 
 The page layout, from top to bottom:
 
-- **Header:** a short description, tips for getting your files, and the **Private and offline** note.
-- **Top-right corner:** the **Dark mode** / **Light mode** toggle. Once a file is loaded, a **Download .zip** card appears below it.
+- **Header:** a short description, tips for getting your files, and the **Private and offline** note. Every text field has a **×** button to clear it; Edit › Undo brings the text back.
+- **Top-right corner:** the **Dark mode** / **Light mode** toggle.
+- **Download .zip:** once a file is loaded, a card with the file name and the **Download .zip** button appears under the description.
 - **Left column:** the file area and the timeline.
 - **Right column:** the settings tabs, and below them the selected slide's **Preview** and **Details**.
 
@@ -231,7 +232,7 @@ The top of the tab, **Importing into Final Cut Pro**, repeats the import steps a
 
 ## Downloading and importing
 
-1. Click **Download .zip** in the top-right card. The card shows the file name before you click, and the progress while media is being rendered.
+1. Click **Download .zip** under the description at the top of the page. The card shows the file name before you click, and the progress while media is being rendered.
 2. Unzip the download anywhere.
 3. In Final Cut Pro, choose **File › Import › XML** and select the `.fcpxml` file in the unzipped folder.
 4. Final Cut Pro creates a new event containing the project. Open the project from the event.
